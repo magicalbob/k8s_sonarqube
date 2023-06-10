@@ -6,6 +6,14 @@ then
     kind create cluster --config kind-config.yml --name kind-sonarqube
 fi
 
+# Make sure create cluster succeeded
+kind  get clusters 2>&1 | grep "kind-sonarqube"
+if [ $? -gt 0 ]
+then
+    echo "Creation of cluster failed. Aborting."
+    exit 666
+fi
+
 # add metrics
 kubectl apply -f https://dev.ellisbs.co.uk/files/components.yaml
 
