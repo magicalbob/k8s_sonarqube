@@ -32,6 +32,9 @@ export NODE_NAME=$(kubectl get nodes |grep control-plan|cut -d\  -f1)
 envsubst < sonarqube.deploy.pv.yml.template > sonarqube.deploy.pv.yml
 kubectl apply -f sonarqube.deploy.pv.yml
 
+# create config map
+kubectl create configmap postgres-config --from-file=postgresql.conf
+
 # create common deployment
 kubectl apply -f sonarqube.yml
 
