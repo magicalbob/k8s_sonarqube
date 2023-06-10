@@ -6,23 +6,9 @@ metadata:
 ---
 
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: postgres-pv
-spec:
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /Users/ian/Documents/src/k8s_sonarqube/postgres
-
----
-
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: postgres-data
   namespace: sonarqube
 spec:
   accessModes:
@@ -30,7 +16,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: ""
+  storageClassName: local-storage
 
 ---
 

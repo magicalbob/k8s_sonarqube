@@ -1,9 +1,9 @@
 # Make sure kind cluster exists
-kind  get clusters 2>&1 | grep "No kind clusters found"
-if [ $? -eq 0 ]
+kind  get clusters 2>&1 | grep "kind-sonarqube"
+if [ $? -gt 0 ]
 then
-    envsubst < kind-config.yaml.template > kind-config.yaml
-    kind create cluster --config kind-config.yaml
+    envsubst < kind-config.yml.template > kind-config.yml
+    kind create cluster --config kind-config.yml --name kind-sonarqube
 fi
 
 # add metrics
