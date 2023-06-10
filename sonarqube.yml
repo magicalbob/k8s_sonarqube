@@ -125,3 +125,18 @@ spec:
       port: 9000
       targetPort: 9000
 
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: sonarqube
+data:
+  postgresql.conf: |
+    # Add your custom postgresql.conf configuration here
+    #     # Example:
+    #         max_connections = 100
+    #             shared_buffers = 128MB
+    #
+    data_directory = '/postgres-data'
