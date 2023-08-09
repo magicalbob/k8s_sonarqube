@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /mnt/postgres-data
+    path: ${PWD}/postgres-data
   nodeAffinity:
     required:
       nodeSelectorTerms:
