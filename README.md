@@ -8,3 +8,5 @@ Sonarqube in kubernetes.
 To reset the auth from default admin/admin:
 
 	curl -u admin:admin -X POST "https://${YOUR_HOST}/api/users/change_password" -d "login=admin&password=${YOUR_NEW_PASSWORD}&previousPassword=admin"
+
+There is a sample systemd serice file `systemd/prot9000.service` to do port forwarding.

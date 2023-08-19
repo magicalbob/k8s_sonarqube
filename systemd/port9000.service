@@ -1,0 +1,15 @@
+[Unit]
+Description=Kubectl Port Forward 9000
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=vagrant
+Group=vagrant
+Type=simple
+ExecStart=/bin/bash -c "kubectl port-forward service/sonarqube -n sonarqube --address 192.168.200.201 9000:9000"
+Restart=always
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
