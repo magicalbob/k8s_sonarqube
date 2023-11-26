@@ -8,20 +8,20 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sonarqube1
+  name: sonarqube
   namespace: sonarqube
 spec:
   selector:
     matchLabels:
-      app: sonarqube1
-  replicas: 1
+      app: sonarqube
+  replicas: 2
   template:
     metadata:
       labels:
-        app: sonarqube1
+        app: sonarqube
     spec:
       containers:
-        - name: sonarqube1
+        - name: sonarqube
           image: sonarqube:community
           ports:
             - containerPort: 9000
@@ -49,54 +49,6 @@ spec:
       volumes:
         - name: sonarqube-data
           emptyDir: {}
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sonarqube2
-  namespace: sonarqube
-spec:
-  selector:
-    matchLabels:
-      app: sonarqube2
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: sonarqube2
-    spec:
-      containers:
-        - name: sonarqube2
-          image: sonarqube:community
-          ports:
-            - containerPort: 9000
-          env:
-            - name: SONAR_JDBC_USERNAME
-              value: sonarcluster
-            - name: SONAR_JDBC_PASSWORD
-              value: sonarcluster
-            - name: SONAR_JDBC_URL
-              value: jdbc:postgresql://192.168.0.97:5432/sonarcluster
-            - name: SONAR_JDBC_MAXACTIVE
-              value: "5"
-            - name: SONAR_JDBC_MAXIDLE
-              value: "2"
-            - name: SONAR_JDBC_MINIDLE
-              value: "1"
-            - name: SONAR_JDBC_MAXLIFETIME
-              value: "600000"
-      initContainers:
-        - name: init-vm-max-map-count
-          image: alpine:latest
-          command: ["sysctl", "-w", "vm.max_map_count=262144"]
-          securityContext:
-            privileged: true  # Required to modify kernel parameters
-      volumes:
-        - name: sonarqube-data
-          emptyDir: {}
-
 ---
 
 apiVersion: v1
@@ -106,8 +58,7 @@ metadata:
   namespace: sonarqube
 spec:
   selector:
-    app: sonarqube1 # Select pod with label app=sonarqube1
-    app: sonarqube2 # Select pod with label app=sonarqube2
+    app: sonarqube # Select pod with label app=sonarqube
   ports:
     - name: http
       protocol: TCP
