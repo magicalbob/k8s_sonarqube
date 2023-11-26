@@ -23,6 +23,13 @@ spec:
       containers:
         - name: sonarqube
           image: sonarqube:community
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "1"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
           ports:
             - containerPort: 9000
           env:
