@@ -5,76 +5,76 @@ metadata:
 
 ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-data
-  namespace: sonarqube
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: local-storage
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: postgres-data
+#  namespace: sonarqube
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 5Gi
+#  storageClassName: local-storage
 
----
+#---
+#
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: postgres
+#  namespace: sonarqube
+#spec:
+#  selector:
+#    matchLabels:
+#      app: postgres
+#  replicas: 1
+#  template:
+#    metadata:
+#      labels:
+#        app: postgres
+#    spec:
+#      containers:
+#        - name: postgres
+#          image: postgres:15.4
+#          env:
+#            - name: POSTGRES_USER
+#              value: sonar
+#            - name: POSTGRES_PASSWORD
+#              value: sonar
+#            - name: POSTGRES_DB
+#              value: sonar
+#          ports:
+#            - containerPort: 5432
+#          volumeMounts:
+#            - name: postgres-data
+#              mountPath: /var/lib/postgresql/data
+#            - name: config
+#              mountPath: /docker-entrypoint-initdb.d/postgresql.conf
+#              subPath: postgresql.conf
+#      volumes:
+#        - name: postgres-data
+#          persistentVolumeClaim:
+#            claimName: postgres-data
+#        - name: config
+#          configMap:
+#            name: postgres-config
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: postgres
-  namespace: sonarqube
-spec:
-  selector:
-    matchLabels:
-      app: postgres
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: postgres
-    spec:
-      containers:
-        - name: postgres
-          image: postgres:15.4
-          env:
-            - name: POSTGRES_USER
-              value: sonar
-            - name: POSTGRES_PASSWORD
-              value: sonar
-            - name: POSTGRES_DB
-              value: sonar
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - name: postgres-data
-              mountPath: /var/lib/postgresql/data
-            - name: config
-              mountPath: /docker-entrypoint-initdb.d/postgresql.conf
-              subPath: postgresql.conf
-      volumes:
-        - name: postgres-data
-          persistentVolumeClaim:
-            claimName: postgres-data
-        - name: config
-          configMap:
-            name: postgres-config
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres
-  namespace: sonarqube
-spec:
-  selector:
-    app: postgres
-  ports:
-    - name: postgres
-      protocol: TCP
-      port: 5432
+#---
+#
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: postgres
+#  namespace: sonarqube
+#spec:
+#  selector:
+#    app: postgres
+#  ports:
+#    - name: postgres
+#      protocol: TCP
+#      port: 5432
 
 ---
 
@@ -104,7 +104,7 @@ spec:
             - name: SONARQUBE_JDBC_PASSWORD
               value: sonar
             - name: SONARQUBE_JDBC_URL
-              value: jdbc:postgresql://postgres:5432/sonar
+              value: jdbc:postgresql://192.168.0.76:5432/sonar
       volumes:
         - name: sonarqube-data
           emptyDir: {}
@@ -127,16 +127,16 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-config
-  namespace: sonarqube
-data:
-  postgresql.conf: |
-    # Add your custom postgresql.conf configuration here
-    #     # Example:
-    #         max_connections = 100
-    #             shared_buffers = 128MB
-    #
-    data_directory = '/postgres-data'
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: postgres-config
+#  namespace: sonarqube
+#data:
+#  postgresql.conf: |
+#    # Add your custom postgresql.conf configuration here
+#    #     # Example:
+#    #         max_connections = 100
+#    #             shared_buffers = 128MB
+#    #
+#    data_directory = '/postgres-data'
