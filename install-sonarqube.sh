@@ -45,17 +45,6 @@ then
     kubectl create namespace sonarqube
 fi
 
-# sort out persistent volume
-if [ "X{$USE_KIND}" == "XX" ];then
-  export NODE_NAME=$(kubectl get nodes |grep control-plane|cut -d\  -f1|head -1)
-  envsubst < sonarqube.deploy.pv.kind.yml.template > sonarqube.deploy.pv.yml
-else
-  export NODE_NAME=$(kubectl get nodes | grep -v ^NAME|grep -v control-plane|cut -d\  -f1|head -1)
-  envsubst < sonarqube.deploy.pv.linux.yml.template > sonarqube.deploy.pv.yml
-  echo mkdir -p ${PWD}/postgres-data|ssh -o StrictHostKeyChecking=no ${NODE_NAME}
-fi
-kubectl apply -f sonarqube.deploy.pv.yml
-
 # create common deployment
 kubectl apply -f sonarqube.yml
 

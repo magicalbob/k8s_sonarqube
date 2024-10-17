@@ -26,11 +26,11 @@ spec:
           ports:
             - containerPort: 9000
           env:
-            - name: SONARQUBE_JDBC_USERNAME
+            - name: SONAR_JDBC_USERNAME
               value: sonar
-            - name: SONARQUBE_JDBC_PASSWORD
+            - name: SONAR_JDBC_PASSWORD
               value: sonar
-            - name: SONARQUBE_JDBC_URL
+            - name: SONAR_JDBC_URL
               value: jdbc:postgresql://192.168.0.76:5432/sonar
       volumes:
         - name: sonarqube-data
